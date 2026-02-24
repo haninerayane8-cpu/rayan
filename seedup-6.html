@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SeedUp — The Gamified Financial Education App</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;0,800;1,700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green-dark: #2d5a27;
+  --green-mid: #4a8c3f;
+  --green-accent: #5aab4a;
+  --green-light: #e8f5e4;
+  --green-pale: #f2faf0;
+  --green-text: #3a6b34;
+  --body-text: #3a3a3a;
+  --muted: #6b7c6a;
+  --white: #ffffff;
+  --cream: #fafdf8;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  color: var(--body-text);
+  background: var(--cream);
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 60px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  position: sticky; top: 0; z-index: 100;
+  border-bottom: 1px solid rgba(90,171,74,0.12);
+}
+
+.logo {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 22px; font-weight: 800;
+  color: var(--green-dark);
+  text-decoration: none;
+}
+
+.logo span { color: var(--green-accent); }
+
+nav ul {
+  list-style: none;
+  display: flex; gap: 36px;
+}
+
+nav ul a {
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--body-text);
+  transition: color 0.2s;
+}
+nav ul a:hover { color: var(--green-accent); }
+
+/* HERO */
+.hero {
+  position: relative;
+  min-height: 480px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  padding: 70px 60px 0;
+  background: linear-gradient(160deg, #f0faea 0%, #e4f5dc 50%, #cfecc3 100%);
+}
+
+.hero-blob {
+  position: absolute; bottom: -80px; left: -100px;
+  width: 500px; height: 360px;
+  background: radial-gradient(ellipse, rgba(120,200,100,0.2) 0%, transparent 70%);
+  border-radius: 50% 60% 40% 50%;
+  pointer-events: none;
+}
+
+.leaf-float {
+  position: absolute; pointer-events: none; opacity: 0.3; font-size: 26px;
+}
+.lf1 { top: 55px; left: 42%; animation: lfloat 7s ease-in-out infinite; }
+.lf2 { bottom: 90px; left: 58%; font-size: 18px; animation: lfloat 9s ease-in-out infinite 1.5s; }
+.lf3 { top: 28px; left: 30%; font-size: 16px; animation: lfloat 8s ease-in-out infinite 3s; }
+
+@keyframes lfloat {
+  0%,100% { transform: translateY(0) rotate(-15deg); }
+  50% { transform: translateY(-14px) rotate(-5deg); }
+}
+
+.hero-content {
+  flex: 1;
+  max-width: 510px;
+  position: relative; z-index: 2;
+  padding-bottom: 60px;
+  animation: fadeUp 0.8s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-content h1 {
+  font-family: 'Nunito', sans-serif;
+  font-size: clamp(34px, 4.5vw, 56px);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--green-dark);
+  margin-bottom: 20px;
+}
+
+.italic-green {
+  font-family: 'Lora', serif;
+  font-style: italic;
+  color: var(--green-accent);
+  font-weight: 600;
+}
+
+.hero-content p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--muted);
+  max-width: 400px;
+  margin-bottom: 36px;
+}
+
+.btn-group { display: flex; gap: 14px; flex-wrap: wrap; }
+
+.btn-primary {
+  background: var(--green-dark);
+  color: white;
+  padding: 13px 28px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  border: none; cursor: pointer;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s, transform 0.2s;
+}
+.btn-primary:hover { background: var(--green-mid); transform: translateY(-2px); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--green-dark);
+  padding: 11px 28px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  border: 2px solid var(--green-dark);
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-outline:hover { background: var(--green-dark); color: white; transform: translateY(-2px); }
+
+/* Phone */
+.hero-phone {
+  flex: 0 0 auto;
+  width: 270px;
+  position: relative; z-index: 2;
+  align-self: flex-end;
+  animation: fadeUp 0.8s ease 0.2s both;
+}
+
+.phone-shell {
+  background: #1a1a1a;
+  border-radius: 38px;
+  padding: 10px;
+  box-shadow: 0 28px 70px rgba(0,0,0,0.22), 0 0 0 1px rgba(255,255,255,0.08);
+}
+
+.phone-notch {
+  height: 22px;
+  background: #1a1a1a;
+  border-radius: 0 0 14px 14px;
+  width: 70px;
+  margin: 0 auto 6px;
+}
+
+.phone-screen {
+  background: #fff;
+  border-radius: 30px;
+  padding: 8px 14px 14px;
+  overflow: hidden;
+}
+
+.ps-header {
+  display: flex; align-items: center; gap: 5px;
+  padding: 8px 0 6px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 10px;
+}
+.ps-logo { font-size: 11px; font-weight: 800; color: var(--green-dark); }
+.ps-logo span { color: var(--green-accent); }
+
+.ps-welcome { font-size: 16px; font-weight: 800; color: #1a1a1a; margin-bottom: 1px; }
+.ps-level { font-size: 9px; color: var(--muted); margin-bottom: 10px; }
+
+.ps-fruits { font-size: 28px; text-align: center; margin-bottom: 10px; letter-spacing: 4px; }
+
+.ps-card {
+  background: #f6fdf4;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(90,171,74,0.12);
+}
+
+.ps-card-label {
+  font-size: 8px; font-weight: 700; text-transform: uppercase;
+  color: var(--muted); letter-spacing: 0.5px; margin-bottom: 6px;
+}
+
+.ps-module-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+.ps-module-icon { font-size: 16px; }
+.ps-module-title { font-size: 10px; font-weight: 700; color: #1a1a1a; line-height: 1.2; }
+.ps-module-sub { font-size: 8px; color: var(--muted); }
+
+.ps-progress-label { font-size: 8px; color: var(--muted); margin-bottom: 3px; }
+.ps-bar { background: #e5e5e5; height: 4px; border-radius: 4px; margin-bottom: 8px; }
+.ps-bar-fill { height: 100%; border-radius: 4px; background: var(--green-accent); width: 40%; }
+
+.ps-resume {
+  background: var(--green-accent);
+  color: white;
+  border: none; border-radius: 5px;
+  padding: 5px 14px;
+  font-size: 9px; font-weight: 700;
+  cursor: pointer;
+  display: block; margin: 0 auto;
+}
+
+.ps-score-card {
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 10px 12px;
+  border: 1px solid #eee;
+}
+.ps-score-label { font-size: 9px; font-weight: 700; color: #444; margin-bottom: 4px; }
+.ps-score-row { font-size: 8px; color: var(--muted); margin-bottom: 3px; }
+.ps-score-bar { background: #e0e0e0; height: 4px; border-radius: 4px; }
+.ps-score-fill { height: 100%; border-radius: 4px; background: #999; width: 18%; }
+.ps-score-num { font-size: 8px; color: var(--muted); text-align: right; margin-top: 2px; }
+
+/* SECTION SHARED */
+section { padding: 80px 60px; }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+
+.section-title {
+  text-align: center;
+  font-size: clamp(22px, 2.8vw, 34px);
+  font-weight: 800;
+  color: var(--green-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 0;
+}
+
+.section-title::before,
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1.5px;
+  background: linear-gradient(to right, transparent, rgba(90,171,74,0.4));
+  max-width: 160px;
+}
+.section-title::after {
+  background: linear-gradient(to left, transparent, rgba(90,171,74,0.4));
+}
+
+.section-title.green { color: var(--green-accent); }
+
+/* WHAT WE DO */
+.what-we-do { background: #fff; }
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 48px;
+}
+
+.feature-card {
+  background: #fff;
+  border: 1px solid rgba(90,171,74,0.15);
+  border-radius: 12px;
+  padding: 32px 20px 28px;
+  text-align: center;
+  transition: transform 0.25s, box-shadow 0.25s;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+.feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 36px rgba(90,171,74,0.12);
+}
+
+.card-icon { font-size: 48px; display: block; margin-bottom: 16px; }
+
+.card-line {
+  width: 36px; height: 2.5px;
+  background: var(--green-accent);
+  margin: 0 auto 14px;
+  border-radius: 2px;
+}
+
+.feature-card h3 {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--green-dark);
+  margin-bottom: 8px;
+  line-height: 1.35;
+}
+
+.feature-card p {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* MISSION */
+.mission {
+  background: linear-gradient(160deg, #eef8e8 0%, #ddf2d4 100%);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.mission::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(90,171,74,0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+
+.mission .section-inner { position: relative; z-index: 1; }
+
+.mission-body {
+  max-width: 640px;
+  margin: 40px auto 0;
+  font-size: 18px;
+  line-height: 1.9;
+  color: var(--green-dark);
+  font-weight: 400;
+}
+.mission-body strong { font-weight: 800; }
+
+/* OUR STORY */
+.story { background: #fff; }
+
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  margin-top: 48px;
+}
+
+.story-text p {
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--body-text);
+  margin-bottom: 18px;
+}
+.story-text strong { font-weight: 800; color: var(--green-dark); }
+
+.story-img {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 18px 55px rgba(0,0,0,0.1);
+}
+
+/* CONTACT */
+.contact {
+  background: linear-gradient(160deg, #eef8e8 0%, #ddf2d4 100%);
+}
+
+.contact-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.contact-card {
+  background: white;
+  border: 1px solid rgba(90,171,74,0.15);
+  border-radius: 14px;
+  padding: 36px 28px;
+  text-decoration: none;
+  color: var(--body-text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  box-shadow: 0 2px 14px rgba(0,0,0,0.04);
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  position: relative;
+}
+.contact-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(90,171,74,0.13);
+  border-color: rgba(90,171,74,0.35);
+}
+
+.cc-icon {
+  width: 64px; height: 64px;
+  background: var(--green-pale);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--green-mid);
+  margin-bottom: 6px;
+  transition: background 0.25s;
+}
+.contact-card:hover .cc-icon {
+  background: var(--green-accent);
+  color: white;
+}
+
+.cc-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.cc-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--green-dark);
+  word-break: break-all;
+}
+
+.cc-arrow {
+  font-size: 18px;
+  color: var(--green-accent);
+  margin-top: 4px;
+  transition: transform 0.2s;
+}
+.contact-card:hover .cc-arrow { transform: translateX(4px); }
+
+@media (max-width: 700px) {
+  .contact-cards { grid-template-columns: 1fr; max-width: 340px; }
+}
+
+/* FOOTER */
+footer {
+  background: var(--green-dark);
+  color: rgba(255,255,255,0.65);
+  text-align: center;
+  padding: 30px 60px;
+  font-size: 14px;
+}
+.footer-logo { font-size: 20px; font-weight: 800; color: white; margin-bottom: 6px; }
+.footer-logo span { color: #8edd7a; }
+
+/* REVEAL ANIM */
+.reveal {
+  opacity: 1; transform: none;
+}
+
+@media (max-width: 900px) {
+  nav { padding: 14px 20px; }
+  nav ul { display: none; }
+  .hero { flex-direction: column; padding: 40px 24px 0; gap: 32px; align-items: flex-start; }
+  .hero-phone { width: 220px; align-self: center; }
+  section { padding: 56px 24px; }
+  .cards-grid { grid-template-columns: repeat(2,1fr); }
+  .story-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+      <path d="M16 28C16 28 6 22 6 13C6 8 10.5 4 16 4C21.5 4 26 8 26 13C26 22 16 28 16 28Z" fill="#4a8c3f"/>
+      <path d="M16 28C16 28 8 20 10 13C11 9.5 13 7 16 6C16 6 12 12 14 20C14.5 22 16 28 16 28Z" fill="#2d5a27"/>
+      <line x1="16" y1="13" x2="16" y2="27" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M16 20C16 20 12 17 11 14" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M16 17C16 17 19.5 15 20.5 12" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+    </svg>
+    seed<span>up</span>
+  </a>
+  <ul>
+    <li><a href="#what">What We Do</a></li>
+    <li><a href="#mission">Our Mission</a></li>
+    <li><a href="#story">Our Story</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-blob"></div>
+  <div class="leaf-float lf1">🍃</div>
+  <div class="leaf-float lf2">🌿</div>
+  <div class="leaf-float lf3">🍀</div>
+
+  <div class="hero-content">
+    <h1>The Gamified<br><span class="italic-green">Financial Education App</span></h1>
+    <p>SeedUp helps institutions and young investors build real investing skills through simulation and competition.</p>
+    <div class="btn-group">
+      <a href="#contact" class="btn-outline">Contact Us</a>
+    </div>
+  </div>
+
+  <div class="hero-phone">
+    <div class="phone-shell">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="ps-header">
+          <svg width="12" height="12" viewBox="0 0 32 32" fill="none"><path d="M16 28C16 28 6 22 6 13C6 8 10.5 4 16 4C21.5 4 26 8 26 13C26 22 16 28 16 28Z" fill="#4a8c3f"/></svg>
+          <span class="ps-logo">seed<span>up</span></span>
+        </div>
+        <div class="ps-welcome">Welcome back,</div>
+        <div class="ps-level">Level 1 — Novice Investor</div>
+        <div class="ps-fruits">🍎 🍫 🌽</div>
+        <div class="ps-card">
+          <div class="ps-card-label">Continue Learning</div>
+          <div class="ps-module-row">
+            <span class="ps-module-icon">📊</span>
+            <div>
+              <div class="ps-module-title">Module 1</div>
+              <div class="ps-module-sub">Introduction to Investing</div>
+            </div>
+          </div>
+          <div class="ps-progress-label">Progress: 40%</div>
+          <div class="ps-bar"><div class="ps-bar-fill"></div></div>
+          <button class="ps-resume">Resume</button>
+        </div>
+        <div class="ps-score-card">
+          <div class="ps-score-label">Your Financial Score</div>
+          <div class="ps-score-row">🔒 Risk Understanding: Beginner</div>
+          <div class="ps-score-bar"><div class="ps-score-fill"></div></div>
+          <div class="ps-score-num">18 / 100</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT WE DO -->
+<section class="what-we-do" id="what">
+  <div class="section-inner">
+    <h2 class="section-title">What We Do</h2>
+    <div class="cards-grid">
+      <div class="feature-card reveal">
+        <span class="card-icon">🪙</span>
+        <div class="card-line"></div>
+        <h3>Investing Simulation Platform</h3>
+        <p>Virtual trading with Seed Coins</p>
+      </div>
+      <div class="feature-card reveal" style="transition-delay:.1s">
+        <span class="card-icon">👥</span>
+        <div class="card-line"></div>
+        <h3>Team-Based Competition</h3>
+        <p>Compete in teams to win</p>
+      </div>
+      <div class="feature-card reveal" style="transition-delay:.2s">
+        <span class="card-icon">🏛️</span>
+        <div class="card-line"></div>
+        <h3>Institutional Solution</h3>
+        <p>White-label platform for organizations</p>
+      </div>
+      <div class="feature-card reveal" style="transition-delay:.3s">
+        <span class="card-icon">🎓</span>
+        <div class="card-line"></div>
+        <h3>Financial Literacy Engagement</h3>
+        <p>Gamified learning for Gen Z</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION -->
+<section class="mission" id="mission">
+  <div class="section-inner">
+    <h2 class="section-title green">Our Mission</h2>
+    <p class="mission-body reveal">
+      At SeedUp, our mission is to make investing education <strong>engaging, competitive, and accessible.</strong><br><br>
+      We believe the next generation should learn investing by doing — not just watching.
+    </p>
+  </div>
+</section>
+
+<!-- OUR STORY -->
+<section class="story" id="story">
+  <div class="section-inner">
+    <h2 class="section-title">Our Story</h2>
+    <div class="story-grid">
+      <div class="story-text reveal">
+        <p><strong>SeedUp</strong> was created to solve a major problem: financial education is outdated and ineffective.</p>
+        <p>We built a platform where users learn <strong>investing</strong> through <strong>real-time simulation</strong>, strategy, and <strong>competition</strong>.</p>
+      </div>
+      <div class="story-img reveal" style="transition-delay:.15s">
+        <svg width="100%" viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="460" height="300" fill="#e8f5e4"/>
+          <!-- Window light effect -->
+          <rect x="0" y="0" width="460" height="300" fill="url(#wlight)" opacity="0.4"/>
+          <defs>
+            <radialGradient id="wlight" cx="70%" cy="20%" r="60%">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.6"/>
+              <stop offset="100%" stop-color="transparent"/>
+            </radialGradient>
+          </defs>
+          <!-- Desk -->
+          <rect x="30" y="215" width="400" height="12" rx="5" fill="#b8d9b0"/>
+          <rect x="60" y="227" width="10" height="55" rx="4" fill="#9bc99a"/>
+          <rect x="390" y="227" width="10" height="55" rx="4" fill="#9bc99a"/>
+          <!-- Plant pot -->
+          <rect x="370" y="195" width="10" height="22" rx="3" fill="#8d6e63"/>
+          <ellipse cx="375" cy="185" rx="20" ry="24" fill="#4caf50" opacity="0.85"/>
+          <ellipse cx="360" cy="193" rx="14" ry="17" fill="#66bb6a" opacity="0.75"/>
+          <ellipse cx="386" cy="190" rx="11" ry="14" fill="#81c784" opacity="0.6"/>
+          <!-- Laptop body -->
+          <rect x="140" y="165" width="150" height="52" rx="7" fill="#2a2a2a"/>
+          <rect x="145" y="169" width="140" height="44" rx="5" fill="#87ceeb"/>
+          <!-- Chart on screen -->
+          <polyline points="155,203 172,188 192,196 212,178 232,186 250,172 262,179" fill="none" stroke="#a5d6a7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="155,203 172,188 192,196 212,178 232,186 250,172 262,179" fill="none" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+          <!-- Laptop base -->
+          <rect x="120" y="217" width="190" height="8" rx="4" fill="#333"/>
+          <!-- Person 1 -->
+          <circle cx="155" cy="145" r="26" fill="#ffcc99"/>
+          <path d="M129 142 Q133 113 155 110 Q177 113 181 142 Q177 126 155 124 Q133 126 129 142Z" fill="#5d4037"/>
+          <rect x="130" y="170" width="50" height="50" rx="12" fill="#1565c0"/>
+          <rect x="108" y="174" width="24" height="11" rx="5" fill="#1565c0" transform="rotate(-12 108 174)"/>
+          <rect x="180" y="174" width="24" height="11" rx="5" fill="#1565c0" transform="rotate(12 180 174)"/>
+          <!-- Person 2 -->
+          <circle cx="305" cy="145" r="26" fill="#ffb74d"/>
+          <path d="M279 142 Q283 113 305 110 Q327 113 331 142 Q327 124 305 122 Q283 124 279 142Z" fill="#3e2723"/>
+          <rect x="280" y="170" width="50" height="50" rx="12" fill="#2e7d32"/>
+          <rect x="258" y="174" width="24" height="11" rx="5" fill="#2e7d32" transform="rotate(-12 258 174)"/>
+          <rect x="330" y="174" width="24" height="11" rx="5" fill="#2e7d32" transform="rotate(12 330 174)"/>
+          <!-- Coffee cup -->
+          <rect x="92" y="203" width="22" height="16" rx="4" fill="#fff" stroke="#ddd" stroke-width="1"/>
+          <path d="M114 208 Q120 208 120 213 Q120 218 114 218" fill="none" stroke="#ddd" stroke-width="1.5"/>
+          <!-- Seedup watermark -->
+          <text x="230" y="288" font-family="sans-serif" font-size="12" font-weight="bold" fill="#4a8c3f" opacity="0.35" text-anchor="middle">seed up</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="section-inner">
+    <h2 class="section-title">Get in Touch</h2>
+    <p style="text-align:center;color:var(--muted);font-size:16px;margin-top:20px;margin-bottom:52px;">
+      We'd love to hear from you. Reach us directly through any of the channels below.
+    </p>
+    <div class="contact-cards reveal">
+
+      <!-- EMAIL -->
+      <div class="contact-card" style="cursor:default;">
+        <div class="cc-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="3"/>
+            <polyline points="2,4 12,13 22,4"/>
+          </svg>
+        </div>
+        <div class="cc-label">Email Us</div>
+        <svg width="220" height="24" viewBox="0 0 220 24" xmlns="http://www.w3.org/2000/svg">
+          <text x="110" y="17" font-family="Nunito, sans-serif" font-size="13" font-weight="700" fill="#2d5a27" text-anchor="middle">contact@seedupapp.com</text>
+        </svg>
+        <div style="font-size:11px; color:#6b7c6a; margin-top:4px;">📋 Copy: contact&#91;at&#93;seedupapp.com</div>
+      </div>
+        <div class="cc-label">Email Us</div>
+        <div class="cc-value" id="email-display" style="user-select:all; cursor:pointer;"></div>
+        <div style="font-size:11px; color:var(--muted); margin-top:4px;">Click to copy</div>
+      </div>
+
+      <!-- LINKEDIN -->
+      <a href="https://linkedin.com/company/seedup" target="_blank" rel="noopener" class="contact-card">
+        <div class="cc-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+            <rect x="2" y="9" width="4" height="12"/>
+            <circle cx="4" cy="4" r="2"/>
+          </svg>
+        </div>
+        <div class="cc-label">LinkedIn</div>
+        <div class="cc-value">linkedin.com/company/seedup</div>
+        <div class="cc-arrow">→</div>
+      </a>
+
+      <!-- INSTAGRAM -->
+      <a href="https://instagram.com/seedupco" target="_blank" rel="noopener" class="contact-card">
+        <div class="cc-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <div class="cc-label">Instagram</div>
+        <div class="cc-value">@seedupco</div>
+        <div class="cc-arrow">→</div>
+      </a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">seed<span>up</span></div>
+  <p>© 2025 SeedUp. All rights reserved. · Making investing education accessible for everyone.</p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-
